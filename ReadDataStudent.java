@@ -2,10 +2,10 @@ import java.util.Scanner;
 import java.io.File;
 
 
-public class ReadData-Student{
+public class ReadDataStudent{
     //I hard-coded the number of rows and columns so 
     //I could use a 2D array
-    private double[][] data = new double[...][...];
+    private double[][] data = new double[21908][2];
 
     //This should read in the csv file and store the data in a 2D array,
     //data -- don't forget to skip the header line and parse everything
@@ -18,7 +18,8 @@ public class ReadData-Student{
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 String[] lineArr = line.split(",");
-                ...
+                data[row][0] = Double.parseDouble(lineArr[6]);
+                data[row][1] = Double.parseDouble(lineArr[8]);
                 row++;
             }
             scanner.close();
@@ -35,8 +36,12 @@ public class ReadData-Student{
     //this should return a double array of the column
     //of data
     public double[] getColumn(int col){
-        double[] column = ...
-        ...
+        double[] column = new double[21908];
+        int i = 0;
+        for (double d: data[col]){
+            column[i] = d;
+            i++;
+        }
         return column;
     }
 
@@ -50,27 +55,35 @@ public class ReadData-Student{
     //and Math.sqrt to take the square root
     public double stdDeviation(double[] arr){
         double sum = 0;
-        double mean = ...
-        ...
-        return .. //sample variance!
+        double mean = mean(arr);
+        for (double d : arr){
+            sum += (d-=mean)*(d-=mean);
+        }
+        sum = sum/21908;
+        return Math.sqrt(sum); //sample variance!
     }
     
     //this returns the mean of the column of data passed in
     //the mean is the sum of the values divided by the number of values
     public double mean(double[] arr){
         double sum = 0;
-        ...
-        return ...;
+        for (double d : arr){
+            sum += d;
+        }
+        return sum/21908;
     }
 
     //this returns the values of a column in standard units
     //the standard units are the value minus the mean divided by the standard deviation
     //this should return a double array of the standard units
     public double[] standardUnits(double[] arr){
-        double[] stdArr = ...
-        double stdDeviation = ...;
-        double mean = ...;
-        ...
+        double[] stdArr = arr;
+        double stdDeviation = stdDeviation(arr);
+        double mean = mean(arr);
+        for (int i = 0; i<arr.length;i++){
+            double x = (arr[i]-mean)/stdDeviation;
+            stdArr[i] = x;
+        }
         return stdArr;
     }
     
@@ -83,8 +96,12 @@ public class ReadData-Student{
     //the correlation is between -1 and 1
     public double correlation(double[] x, double[] y){
         double sum = 0;
-        ...
-        return ...;    
+        int i =0;
+        for (double d : x){
+            sum+= d*y[i];
+            i++;
+        }
+        return sum/21908;    
     }
     
     public void runRegression(){
@@ -110,7 +127,7 @@ public class ReadData-Student{
         System.out.println();
     }
     public static void main(String[] args) {
-        ReadData rd = new ReadData();
+        ReadDataStudent rd = new ReadDataStudent();
         rd.read();
         rd.runRegression();
     }
