@@ -5,7 +5,7 @@ import java.io.File;
 public class ReadDataStudent{
     //I hard-coded the number of rows and columns so 
     //I could use a 2D array
-    private double[][] data = new double[21908][2];
+    private double[][] data = new double[21908][14];
 
     //This should read in the csv file and store the data in a 2D array,
     //data -- don't forget to skip the header line and parse everything
@@ -18,8 +18,8 @@ public class ReadDataStudent{
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 String[] lineArr = line.split(",");
-                data[row][0] = Double.parseDouble(lineArr[6]);
-                data[row][1] = Double.parseDouble(lineArr[8]);
+                data[row][7] = Double.parseDouble(lineArr[7]);
+                data[row][9] = Double.parseDouble(lineArr[9]);
                 row++;
             }
             scanner.close();
@@ -37,10 +37,8 @@ public class ReadDataStudent{
     //of data
     public double[] getColumn(int col){
         double[] column = new double[21908];
-        int i = 0;
-        for (double d: data[col]){
-            column[i] = d;
-            i++;
+        for(int j = 0; j<column.length;j++){
+            column[j] = data[j][col];
         }
         return column;
     }
@@ -105,18 +103,18 @@ public class ReadDataStudent{
     }
     
     public void runRegression(){
-        // double[] x = getColumn(7);
-        // double[] y = getColumn(9);
-        // double[] xStd = standardUnits(x);
-        // double[] yStd = standardUnits(y);
-        // double correlation = correlation(xStd, yStd);
-        // double slope = correlation * stdDeviation(y) / stdDeviation(x);
-        // double intercept = mean(y) - slope * mean(x);
-        // System.out.println("Correlation: " + correlation);
-        // System.out.println("Slope: " + slope);
-        // System.out.println("Intercept: " + intercept);
-        // Scatter s = new Scatter();
-        // s.displayScatterPlot(x, y);
+        double[] x = getColumn(7);
+        double[] y = getColumn(9);
+        double[] xStd = standardUnits(x);
+        double[] yStd = standardUnits(y);
+        double correlation = correlation(xStd, yStd);
+        double slope = correlation * stdDeviation(y) / stdDeviation(x);
+        double intercept = mean(y) - slope * mean(x);
+        System.out.println("Correlation: " + correlation);
+        System.out.println("Slope: " + slope);
+        System.out.println("Intercept: " + intercept);
+        Scatter s = new Scatter();
+        s.displayScatterPlot(x, y);
     }
 
     //this prints the array passed in - you may want this for debugging
